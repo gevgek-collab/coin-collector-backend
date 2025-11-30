@@ -254,14 +254,15 @@ Extract and return a JSON object with ALL these fields (use empty string "" if n
   "weight": "weight in grams (ONLY the number, e.g., '3.5' or '12.3')",
   "catalogNumbers": "catalog references (e.g., 'RIC 123', 'Sear 456', 'SNG 789')",
   "grade": "condition or grade (e.g., 'VF', 'XF', 'EF', 'Fine', 'Good', 'Choice')",
-  "price": "price with currency (e.g., '45 EUR', '$50', '30 USD')",
+  "price": "price with currency (e.g., '45 EUR', '$50', '30 USD', 'CHF 120')",
   "notes": "any additional important information"
 }}
 
 IMPORTANT EXTRACTION RULES:
 - For diameter and weight: extract ONLY the numeric value, remove units like 'mm', 'g', 'grams'
 - For grade: look for condition terms like VF, XF, EF, Fine, Good Fine, Very Fine, Extremely Fine, Choice
-- For price: include both number and currency symbol/code
+- For price: MUST include both number AND currency (e.g., '100 EUR', '$50', '45 USD', 'CHF 120')
+- If multiple prices in different currencies are listed, extract ONLY the first/primary price (usually the realized/hammer price or final price)
 - For denomination: recognize terms like Tetradrachm, Drachm, Obol, Denarius, Sestertius, As, AE (bronze), Follis, Solidus, Miliaresion
 - emperor and ruler should have the same value (fill both with the ruler's name)
 - mint and city should have the same value (fill both with the location)
