@@ -172,7 +172,13 @@ def scrape_url():
                 structured_data = {
                     'year': '',
                     'emperor': '',
+                    'ruler': '',
+                    'dynasty': '',
                     'mint': '',
+                    'city': '',
+                    'province': '',
+                    'country': '',
+                    'moneyer': '',
                     'denomination': '',
                     'catalogNumbers': '',
                     'obverseDescription': '',
@@ -189,7 +195,13 @@ def scrape_url():
             structured_data = {
                 'year': '',
                 'emperor': '',
+                'ruler': '',
+                'dynasty': '',
                 'mint': '',
+                'city': '',
+                'province': '',
+                'country': '',
+                'moneyer': '',
                 'denomination': '',
                 'catalogNumbers': '',
                 'obverseDescription': '',
@@ -226,26 +238,36 @@ Text: {text_sample}
 Extract and return a JSON object with ALL these fields (use empty string "" if not found):
 {{
   "year": "year or period (e.g., '100-200 AD', '336-323 BC')",
-  "emperor": "emperor or ruler name (e.g., 'Trajan', 'Alexander III')",
-  "mint": "mint location or city (e.g., 'Rome', 'Athens', 'Antioch')",
-  "denomination": "coin denomination (e.g., 'Denarius', 'Tetradrachm', 'AE')",
+  "emperor": "emperor, ruler, sultan, or caliph name (e.g., 'Trajan', 'Alexander III', 'Saladin')",
+  "ruler": "same as emperor - ruler name for non-Roman coins",
+  "dynasty": "dynasty or ruling family (e.g., 'Julio-Claudian', 'Umayyad', 'Heraclian')",
+  "mint": "mint location or city (e.g., 'Rome', 'Athens', 'Antioch', 'Constantinople')",
+  "city": "same as mint - city name (e.g., 'Athens', 'Corinth', 'Syracuse')",
+  "province": "province or region (e.g., 'Lydia', 'Thrace', 'Syria')",
+  "country": "country or kingdom (e.g., 'France', 'England', 'Holy Roman Empire')",
+  "moneyer": "moneyer or magistrate name for Roman Republican coins",
+  "denomination": "coin denomination (e.g., 'Denarius', 'Tetradrachm', 'AE', 'Follis', 'Solidus')",
   "obverseDescription": "description of obverse/front side",
   "reverseDescription": "description of reverse/back side",
-  "material": "metal type (e.g., 'Silver', 'Bronze', 'Gold')",
+  "material": "metal type (e.g., 'Silver', 'Bronze', 'Gold', 'Billon', 'Copper')",
   "diameter": "diameter in mm (ONLY the number, e.g., '20' or '20.5')",
   "weight": "weight in grams (ONLY the number, e.g., '3.5' or '12.3')",
-  "catalogNumbers": "catalog references (e.g., 'RIC 123', 'Sear 456')",
-  "grade": "condition or grade (e.g., 'VF', 'XF', 'EF', 'Fine', 'Good')",
+  "catalogNumbers": "catalog references (e.g., 'RIC 123', 'Sear 456', 'SNG 789')",
+  "grade": "condition or grade (e.g., 'VF', 'XF', 'EF', 'Fine', 'Good', 'Choice')",
   "price": "price with currency (e.g., '45 EUR', '$50', '30 USD')",
   "notes": "any additional important information"
 }}
 
-IMPORTANT:
+IMPORTANT EXTRACTION RULES:
 - For diameter and weight: extract ONLY the numeric value, remove units like 'mm', 'g', 'grams'
-- For grade: look for condition terms like VF, XF, EF, Fine, Good Fine, Very Fine, Extremely Fine
+- For grade: look for condition terms like VF, XF, EF, Fine, Good Fine, Very Fine, Extremely Fine, Choice
 - For price: include both number and currency symbol/code
-- If you see measurements like "20 mm" extract just "20" for diameter
-- If you see weight like "3.5 g" extract just "3.5" for weight
+- For denomination: recognize terms like Tetradrachm, Drachm, Obol, Denarius, Sestertius, As, AE (bronze), Follis, Solidus, Miliaresion
+- emperor and ruler should have the same value (fill both with the ruler's name)
+- mint and city should have the same value (fill both with the location)
+- If you see "moneyer" or "magistrate" in the text, extract it to the moneyer field
+- If you see dynasty name (e.g., "Julio-Claudian", "Flavian", "Severan", "Abbasid"), extract it to dynasty field
+- If text mentions a province (e.g., "Lydia", "Thrace", "Bithynia"), extract it to province field
 
 Return ONLY the JSON object, no explanation:"""
         
@@ -280,7 +302,13 @@ Return ONLY the JSON object, no explanation:"""
         return {
             'year': '',
             'emperor': '',
+            'ruler': '',
+            'dynasty': '',
             'mint': '',
+            'city': '',
+            'province': '',
+            'country': '',
+            'moneyer': '',
             'denomination': '',
             'catalogNumbers': '',
             'obverseDescription': '',
